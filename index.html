@@ -185,25 +185,6 @@
         <!-- ★ BARU: selesai -->
 
       </div>
-      <!-- ★ BARU: Chatbot SMKN 9 -->
-<button class="chat-toggle" id="chatToggle" aria-label="Buka chatbot">💬</button>
-<section class="chat-box" id="chatBox" hidden>
-  <div class="chat-head">
-    <strong>Asisten SMKN 9 Medan</strong>
-    <button id="chatTutup" aria-label="Tutup">✕</button>
-  </div>
-  <div class="chat-pesan" id="chatPesan"></div>
-  <div class="chat-cepat" id="chatCepat">
-    <button>Tentang sekolah</button>
-    <button>Jurusan</button>
-    <button>Guru</button>
-    <button>Kontak</button>
-  </div>
-  <div class="chat-input">
-    <input type="text" id="chatInput" placeholder="Tulis pertanyaan..." autocomplete="off">
-    <button id="chatKirim">Kirim</button>
-  </div>
-</section>
     </main>
     <!-- ★ BARU: halaman Kurikulum -->
 <main class="konten-utama halaman" id="hal-kurikulum" hidden>
@@ -222,6 +203,8 @@
     <h2>Kontak</h2>
     <p>Isi halaman Kontak akan diisi nanti.</p>
   </main>
+
+
 
   <!-- ★ BARU: halaman dari Menu Cepat -->
 <main class="konten-utama halaman" id="hal-jadwal" hidden>
@@ -258,6 +241,24 @@
       <p>&copy; 2026 Jurusan RPL SMK Negeri 9 Medan — Modul Pemrograman Web Lanjut</p>
     </footer>
   </div>
+
+  <!-- ★ BARU: Chatbot pilihan pertanyaan (kanan bawah, membesar fluid) -->
+<button class="chat-toggle" id="chatToggle" aria-label="Buka chatbot">💬</button>
+
+<div class="chat-box" id="chatBox" aria-hidden="true">
+  <section class="chat-panel">
+    <div class="chat-head">
+      <strong>Asisten SMKN 9 Medan</strong>
+      <div>
+        <button id="chatUlang" aria-label="Mulai ulang">↺</button>
+        <button id="chatTutup" aria-label="Tutup">✕</button>
+      </div>
+    </div>
+    <div class="chat-pesan" id="chatPesan"></div>
+    <div class="chat-pilihan" id="chatPilihan"></div>
+  </section>
+</div>
+
   <script>
     const glow = document.querySelector('.cursor-glow');
     const kartu = document.querySelectorAll('.card');
@@ -306,32 +307,27 @@ document.querySelector('.hamburger-btn').addEventListener('click', function () {
   document.querySelector('.nav-links').classList.toggle('buka');
 });
 
-// ★ BARU: Chatbot
-// ISI DATA DI SINI sesuai informasi resmi sekolah
-const jawabanBot = [
-  { kata: ['halo', 'hai', 'hi', 'selamat'],
-    jawab: 'Halo! Saya asisten SMKN 9 Medan. Tanyakan tentang sekolah, jurusan, atau guru.' },
-  { kata: ['sekolah', 'smkn', 'alamat', 'lokasi', 'profil'],
-    jawab: 'SMK Negeri 9 Medan adalah sekolah menengah kejuruan negeri di Kota Medan. [Isi alamat, tahun berdiri, akreditasi di sini]' },
-  { kata: ['jurusan', 'rpl', 'program', 'keahlian'],
-    jawab: 'Jurusan RPL (Rekayasa Perangkat Lunak) mempelajari pemrograman web, basis data, dan aplikasi. [Tambahkan jurusan lain di sini]' },
-  { kata: ['guru', 'pengajar', 'wali', 'kajur'],
-    jawab: 'Guru jurusan RPL: [isi nama guru dan mata pelajarannya di sini]' },
-  { kata: ['kontak', 'telepon', 'hubungi', 'email'],
-    jawab: 'Kontak sekolah: [isi nomor telepon dan email di sini]' }
+// ★ BARU: Chatbot pilihan pertanyaan
+// ISI JAWABAN di sini sesuai informasi resmi sekolah
+const daftarTanya = [
+  { t: 'Apa itu SMKN 9 Medan?',
+    j: 'SMK Negeri 9 Medan adalah sekolah menengah kejuruan negeri di Kota Medan. [Isi tahun berdiri, akreditasi, dan profil singkat di sini]' },
+  { t: 'Di mana alamat sekolah?',
+    j: 'Alamat: [isi alamat lengkap sekolah di sini]' },
+  { t: 'Jurusan apa saja yang ada?',
+    j: 'Jurusan di SMKN 9 Medan: [isi daftar jurusan di sini]' },
+  { t: 'Apa itu jurusan RPL?',
+    j: 'RPL (Rekayasa Perangkat Lunak) mempelajari pemrograman web, basis data, dan pembuatan aplikasi.' },
+  { t: 'Siapa guru jurusan RPL?',
+    j: 'Guru jurusan RPL: [isi nama guru dan mata pelajarannya di sini]' },
+  { t: 'Bagaimana cara menghubungi sekolah?',
+    j: 'Kontak: [isi nomor telepon, email, dan media sosial sekolah di sini]' }
 ];
-
-// ★ BARU: Menu Cepat bisa diklik
-document.querySelectorAll('.sidebar-kiri li').forEach(function (li) {
-  li.addEventListener('click', function () {
-    tampilHalaman(li.dataset.halaman);
-  });
-});
-const jawabanDefault = 'Maaf, saya belum paham. Coba tanyakan tentang sekolah, jurusan, guru, atau kontak.';
 
 const chatBox = document.getElementById('chatBox');
 const chatPesan = document.getElementById('chatPesan');
-const chatInput = document.getElementById('chatInput');
+const chatPilihan = document.getElementById('chatPilihan');
+const chatToggle = document.getElementById('chatToggle');
 
 function tambahPesan(teks, dari) {
   const d = document.createElement('div');
@@ -339,40 +335,114 @@ function tambahPesan(teks, dari) {
   d.textContent = teks;
   chatPesan.appendChild(d);
   chatPesan.scrollTop = chatPesan.scrollHeight;
+  return d;
 }
-function kirimPesan(teks) {
-  teks = teks.trim();
-  if (!teks) return;
-  tambahPesan(teks, 'user');
-  const t = teks.toLowerCase();
-  let balasan = jawabanDefault;
-  for (let i = 0; i < jawabanBot.length; i++) {
-    if (jawabanBot[i].kata.some(function (k) { return t.includes(k); })) {
-      balasan = jawabanBot[i].jawab;
-      break;
-    }
+function sapa() {
+  tambahPesan('Halo! Pilih pertanyaan di bawah ini, nanti saya jawab.', 'bot');
+}
+function pilihTanya(p) {
+  tambahPesan(p.t, 'user');
+  const balas = tambahPesan('...', 'bot');
+  balas.classList.add('mengetik');
+  setTimeout(function () {
+    balas.classList.remove('mengetik');
+    balas.textContent = p.j;
+    chatPesan.scrollTop = chatPesan.scrollHeight;
+  }, 600);
+}
+daftarTanya.forEach(function (p) {
+  const b = document.createElement('button');
+  b.textContent = p.t;
+  b.addEventListener('click', function () { pilihTanya(p); });
+  chatPilihan.appendChild(b);
+});
+
+function bukaChat() {
+  chatBox.classList.add('buka');
+  chatBox.setAttribute('aria-hidden', 'false');
+  chatToggle.classList.add('sembunyi');
+  if (chatPesan.children.length === 0) sapa();
+}
+function tutupChat() {
+  chatBox.classList.remove('buka');
+  chatBox.setAttribute('aria-hidden', 'true');
+  chatToggle.classList.remove('sembunyi');
+}
+chatToggle.addEventListener('click', bukaChat);
+document.getElementById('chatTutup').addEventListener('click', tutupChat);
+document.getElementById('chatUlang').addEventListener('click', function () {
+  chatPesan.innerHTML = '';
+  sapa();
+});
+chatBox.addEventListener('click', function (e) {
+  if (e.target === chatBox) tutupChat();   // klik area blur = tutup
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') tutupChat();
+});
+
+// ★ BARU: Navbar fluid v2 (tepi depan bergerak cepat, tepi belakang menyusul)
+const navEl = document.querySelector('.nav-links');
+const pill = document.createElement('span');
+pill.className = 'nav-pill';
+navEl.prepend(pill);
+let pillL = null, timerPill;
+
+function gerakPill() {
+  const aktif = navEl.querySelector('a.aktif');
+  if (!aktif || navEl.offsetParent === null) {
+    pill.style.opacity = '0';
+    pillL = null;
+    return;
   }
-  setTimeout(function () { tambahPesan(balasan, 'bot'); }, 400);
+  const L = aktif.offsetLeft;
+  const R = navEl.offsetWidth - (L + aktif.offsetWidth);
+  pill.style.top = aktif.offsetTop + 'px';
+  pill.style.height = aktif.offsetHeight + 'px';
+  pill.style.opacity = '1';
+
+  if (pillL === null) {                    // pertama kali: langsung di tempat
+    pill.style.transition = 'none';
+    pill.style.left = L + 'px';
+    pill.style.right = R + 'px';
+    void pill.offsetWidth;
+    pill.style.transition = '';
+  } else if (L !== pillL) {
+    const kanan = L > pillL;
+    const cepat  = '.38s cubic-bezier(.22,1,.36,1)';
+    const lambat = '.7s cubic-bezier(.22,1,.36,1) .08s';
+    // tepi depan cepat, tepi belakang lambat -> kotak melar lalu menyusut
+    pill.style.transition =
+      'left ' + (kanan ? lambat : cepat) + ', ' +
+      'right ' + (kanan ? cepat : lambat) + ', ' +
+      'transform .35s ease, opacity .3s ease';
+    pill.style.left = L + 'px';
+    pill.style.right = R + 'px';
+    pill.classList.add('bergerak');
+    clearTimeout(timerPill);
+    timerPill = setTimeout(function () { pill.classList.remove('bergerak'); }, 450);
+  }
+  pillL = L;
 }
 
-document.getElementById('chatToggle').addEventListener('click', function () {
-  chatBox.hidden = !chatBox.hidden;
-  if (!chatBox.hidden && chatPesan.children.length === 0) {
-    tambahPesan('Halo! Saya asisten SMKN 9 Medan. Mau tanya apa?', 'bot');
-  }
+// sambungkan ke fungsi pindah halaman yang sudah ada
+const tampilHalamanAsli = tampilHalaman;
+tampilHalaman = function (id) {
+  tampilHalamanAsli(id);
+  gerakPill();
+};
+document.querySelector('.hamburger-btn').addEventListener('click', function () {
+  setTimeout(gerakPill, 0);
 });
-document.getElementById('chatTutup').addEventListener('click', function () {
-  chatBox.hidden = true;
-});
-document.getElementById('chatKirim').addEventListener('click', function () {
-  kirimPesan(chatInput.value);
-  chatInput.value = '';
-});
-chatInput.addEventListener('keydown', function (e) {
-  if (e.key === 'Enter') { kirimPesan(chatInput.value); chatInput.value = ''; }
-});
-document.querySelectorAll('#chatCepat button').forEach(function (b) {
-  b.addEventListener('click', function () { kirimPesan(b.textContent); });
+window.addEventListener('resize', function () { pillL = null; gerakPill(); });
+window.addEventListener('load', function () { pillL = null; gerakPill(); });
+gerakPill();
+
+// ★ BARU: Menu Cepat bisa diklik
+document.querySelectorAll('.sidebar-kiri li').forEach(function (li) {
+  li.addEventListener('click', function () {
+    tampilHalaman(li.dataset.halaman);
+  });
 });
   </script>
 </body>
