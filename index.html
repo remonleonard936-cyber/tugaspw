@@ -256,6 +256,11 @@
     </div>
     <div class="chat-pesan" id="chatPesan"></div>
     <div class="chat-pilihan" id="chatPilihan"></div>
+
+<form class="chat-form" id="chatForm" autocomplete="off">
+  <input type="text" id="chatInput" placeholder="Atau ketik pertanyaanmu di sini..." aria-label="Ketik pertanyaan">
+  <button type="submit">Kirim</button>
+</form>
   </section>
 </div>
 
@@ -307,27 +312,62 @@ document.querySelector('.hamburger-btn').addEventListener('click', function () {
   document.querySelector('.nav-links').classList.toggle('buka');
 });
 
-// ★ BARU: Chatbot pilihan pertanyaan
-// ISI JAWABAN di sini sesuai informasi resmi sekolah
+// ★ Chatbot: pilih pertanyaan ATAU ketik sendiri
+// t = teks tombol, k = kata kunci (untuk pertanyaan yang diketik), j = jawaban
 const daftarTanya = [
+  { t: 'Kapan SMKN 9 Medan berdiri?',
+    k: ['berdiri', 'didirikan', 'tahun', 'sejarah', 'pendirian', 'sk pendirian'],
+    j: 'SMKN 9 Medan resmi didirikan pada 7 Maret 1997 berdasarkan SK Pendirian Nomor 036/0/1997.' },
+
+  { t: 'Apa akreditasi sekolah?',
+    k: ['akreditasi', 'akreditasinya', 'iso', 'mutu', 'unggul', 'ban-sm'],
+    j: 'SMKN 9 Medan memiliki Akreditasi A (Unggul) dengan Nomor SK 762/BAN-SM/SK/2019, serta menerapkan standar manajemen mutu ISO 9001:2000.' },
+
   { t: 'Apa itu SMKN 9 Medan?',
-    j: 'SMK Negeri 9 Medan adalah sekolah menengah kejuruan negeri di Kota Medan. [Isi tahun berdiri, akreditasi, dan profil singkat di sini]' },
+    k: ['profil', 'apa itu smkn', 'tentang sekolah', 'npsn', 'fasilitas', 'jumlah siswa', 'siswa', 'guru', 'tenaga pendidik', 'laboratorium', 'ruang kelas', 'perpustakaan', 'lsp', 'bnsp', 'luas'],
+    j: 'SMKN 9 Medan (NPSN: 10210766) adalah sekolah menengah kejuruan berstatus negeri di bawah naungan Pemerintah Provinsi Sumatera Utara.\n\n' +
+       '• Lahan seluas lebih dari 8.800 m²\n' +
+       '• Sekitar 98 tenaga pendidik\n' +
+       '• Sekitar 1.900 – 2.000 siswa\n' +
+       '• Lebih dari 60 ruang kelas, 17 laboratorium praktik, dan perpustakaan\n' +
+       '• Memiliki LSP-P1 SMKN 9 Medan yang terlisensi BNSP untuk menguji kompetensi keahlian siswa sebelum lulus' },
+
   { t: 'Di mana alamat sekolah?',
-    j: 'Alamat: [isi alamat lengkap sekolah di sini]' },
+    k: ['alamat', 'lokasi', 'dimana', 'di mana', 'letak', 'jalan', 'patriot', 'kode pos', 'sunggal'],
+    j: 'Alamat lengkap:\nJl. Patriot No. 20 A, Kelurahan Lalang, Kecamatan Medan Sunggal, Kota Medan, Sumatera Utara, Kode Pos 20127.' },
+
   { t: 'Jurusan apa saja yang ada?',
-    j: 'Jurusan di SMKN 9 Medan: [isi daftar jurusan di sini]' },
+    k: ['jurusan apa', 'daftar jurusan', 'program keahlian', 'tkj', 'dkv', 'animasi', 'pspt', 'pekerja sosial', 'televisi', 'desain', 'jaringan'],
+    j: 'Ada 6 Program Keahlian yang berfokus pada teknologi informasi, industri kreatif, dan layanan sosial:\n\n' +
+       '1. Rekayasa Perangkat Lunak (RPL)\n' +
+       '2. Teknik Komputer dan Jaringan (TKJ)\n' +
+       '3. Desain Komunikasi Visual (DKV)\n' +
+       '4. Animasi\n' +
+       '5. Produksi dan Siaran Program Televisi (PSPT)\n' +
+       '6. Pekerja Sosial' },
+
   { t: 'Apa itu jurusan RPL?',
-    j: 'RPL (Rekayasa Perangkat Lunak) mempelajari pemrograman web, basis data, dan pembuatan aplikasi.' },
-  { t: 'Siapa guru jurusan RPL?',
-    j: 'Guru jurusan RPL: [isi nama guru dan mata pelajarannya di sini]' },
+    k: ['rpl', 'rekayasa', 'perangkat lunak', 'software', 'coding', 'programmer', 'prospek', 'lulusan', 'materi', 'belajar apa'],
+    j: 'Rekayasa Perangkat Lunak (RPL) adalah jurusan yang mempelajari seluruh proses pembuatan dan pengembangan perangkat lunak (software).\n\n' +
+       'Materi yang dipelajari: dasar pemrograman (coding), pembuatan situs web, pengembangan aplikasi seluler, perancangan basis data, serta pengelolaan antarmuka pengguna (UI/UX).\n\n' +
+       'Prospek lulusan: junior programmer (tersedia skema sertifikasi Pemrogram Junior di LSP sekolah), web developer, mobile app developer, penguji perangkat lunak (quality assurance), atau melanjutkan kuliah di bidang Ilmu Komputer dan Teknik Informatika.' },
+
   { t: 'Bagaimana cara menghubungi sekolah?',
-    j: 'Kontak: [isi nomor telepon, email, dan media sosial sekolah di sini]' }
+    k: ['kontak', 'hubungi', 'menghubungi', 'telepon', 'telpon', 'telp', 'fax', 'email', 'surel', 'bkk', 'lowongan', 'alumni', 'website', 'situs', 'instagram', 'facebook', 'sosial media', 'media sosial'],
+    j: 'Saluran resmi SMKN 9 Medan:\n\n' +
+       '• Telepon / Fax: (061) 8454350\n' +
+       '• Email utama: smkn09medan@gmail.com\n' +
+       '• Email Bursa Kerja Khusus (BKK): bkk@smkn9medan.sch.id (khusus urusan alumni dan lowongan kerja)\n' +
+       '• Situs web resmi: SMKN 9 Medan\n' +
+       '• Media sosial: Instagram SMKN 9 Medan dan Facebook SMK Negeri 9 Medan' }
 ];
 
 const chatBox = document.getElementById('chatBox');
 const chatPesan = document.getElementById('chatPesan');
 const chatPilihan = document.getElementById('chatPilihan');
 const chatToggle = document.getElementById('chatToggle');
+const chatForm = document.getElementById('chatForm');
+const chatInput = document.getElementById('chatInput');
 
 function tambahPesan(teks, dari) {
   const d = document.createElement('div');
@@ -337,19 +377,54 @@ function tambahPesan(teks, dari) {
   chatPesan.scrollTop = chatPesan.scrollHeight;
   return d;
 }
+
 function sapa() {
-  tambahPesan('Halo! Pilih pertanyaan di bawah ini, nanti saya jawab.', 'bot');
+  tambahPesan('Halo! Pilih pertanyaan di bawah, atau ketik pertanyaanmu sendiri.', 'bot');
 }
-function pilihTanya(p) {
-  tambahPesan(p.t, 'user');
-  const balas = tambahPesan('...', 'bot');
-  balas.classList.add('mengetik');
+
+// bot "mengetik" lalu menampilkan jawaban
+function balas(jawaban) {
+  const b = tambahPesan('...', 'bot');
+  b.classList.add('mengetik');
   setTimeout(function () {
-    balas.classList.remove('mengetik');
-    balas.textContent = p.j;
+    b.classList.remove('mengetik');
+    b.textContent = jawaban;
     chatPesan.scrollTop = chatPesan.scrollHeight;
   }, 600);
 }
+
+// OPSI 1: klik tombol pertanyaan
+function pilihTanya(p) {
+  tambahPesan(p.t, 'user');
+  balas(p.j);
+}
+
+// OPSI 2: ketik pertanyaan -> cari yang paling cocok berdasarkan kata kunci
+function cariJawaban(teks) {
+  const q = teks.toLowerCase();
+  let terbaik = null, skorMax = 0;
+  daftarTanya.forEach(function (p) {
+    let skor = 0;
+    p.k.forEach(function (kata) {
+      if (q.indexOf(kata) !== -1) skor += kata.length;
+    });
+    if (skor > skorMax) { skorMax = skor; terbaik = p; }
+  });
+  return terbaik
+    ? terbaik.j
+    : 'Maaf, saya belum menemukan jawaban untuk pertanyaan itu. Coba pilih salah satu pertanyaan di bawah, atau tanyakan tentang: tahun berdiri, akreditasi, profil, alamat, jurusan, RPL, atau kontak sekolah.';
+}
+
+chatForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const teks = chatInput.value.trim();
+  if (!teks) return;
+  tambahPesan(teks, 'user');
+  chatInput.value = '';
+  balas(cariJawaban(teks));
+});
+
+// buat tombol-tombol pilihan
 daftarTanya.forEach(function (p) {
   const b = document.createElement('button');
   b.textContent = p.t;
@@ -362,12 +437,15 @@ function bukaChat() {
   chatBox.setAttribute('aria-hidden', 'false');
   chatToggle.classList.add('sembunyi');
   if (chatPesan.children.length === 0) sapa();
+  setTimeout(function () { chatInput.focus(); }, 500);
 }
+
 function tutupChat() {
   chatBox.classList.remove('buka');
   chatBox.setAttribute('aria-hidden', 'true');
   chatToggle.classList.remove('sembunyi');
 }
+
 chatToggle.addEventListener('click', bukaChat);
 document.getElementById('chatTutup').addEventListener('click', tutupChat);
 document.getElementById('chatUlang').addEventListener('click', function () {
