@@ -472,3 +472,50 @@ body::before { opacity: .35; }   /* gumpalan warna diredupkan */
 @media screen and (max-width: 600px) {
   .kur-grid { grid-template-columns: 1fr; }
 }
+
+
+/* Menu hamburger: tampil vertikal, muncul berjenjang satu per satu */
+@media screen and (max-width: 600px) {
+  .nav-links.buka {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  .nav-links.buka a {
+    display: block;
+    padding: 12px 18px;
+    border-radius: 14px;
+    opacity: 1;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.25);
+    animation: menu-turun .45s cubic-bezier(.22,1,.36,1) backwards;
+  }
+
+  /* jeda tiap item = efek berjenjang */
+  .nav-links.buka a:nth-of-type(1) { animation-delay: .05s; }
+  .nav-links.buka a:nth-of-type(2) { animation-delay: .13s; }
+  .nav-links.buka a:nth-of-type(3) { animation-delay: .21s; }
+  .nav-links.buka a:nth-of-type(4) { animation-delay: .29s; }
+  .nav-links.buka a:nth-of-type(5) { animation-delay: .37s; }
+  .nav-links.buka a:nth-of-type(6) { animation-delay: .45s; }
+
+  /* penanda halaman aktif: kotak geser (nav-pill) tidak dipakai di mode ini */
+  .nav-pill { display: none; }
+  .nav-links.buka a.aktif {
+    transform: none;
+    background: rgba(255,255,255,.3);
+    font-weight: 600;
+  }
+}
+
+@keyframes menu-turun {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* hormati pengguna yang mematikan animasi */
+@media (prefers-reduced-motion: reduce) {
+  .nav-links.buka a { animation: none; }
+}
