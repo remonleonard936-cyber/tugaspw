@@ -225,9 +225,52 @@
   
   <!-- ★ BARU: halaman Karya Siswa -->
   <main class="konten-utama halaman" id="hal-karya" hidden>
-    <h2>Karya Siswa</h2>
-    <p>Isi halaman Karya Siswa akan diisi nanti.</p>
-  </main>
+  <h2>Karya Siswa</h2>
+  <p class="kur-intro">
+    Siswa SMK Negeri 9 Medan aktif menghasilkan produk kreatif, aplikasi digital,
+    film pendek, hingga inovasi robotika yang disesuaikan dengan 6 konsentrasi keahlian.
+    Karya dipamerkan melalui program <strong>Teaching Factory</strong> maupun ajang
+    <strong>Lomba Kompetensi Siswa (LKS)</strong>.
+  </p>
+
+  <h3 class="kur-judul">Ragam Karya Siswa Berdasarkan Jurusan</h3>
+  <div class="card-grid">
+    <article class="card">
+      <h4>Animasi 2D, 3D &amp; Arsitektural</h4>
+      <p>Siswa Animasi rutin memproduksi film animasi pendek, desain model 3D (menggunakan Blender),
+         hingga jasa pembuatan animasi arsitektural yang dipublikasikan melalui kanal resmi
+         Animasi SMKN 9 Medan di YouTube.</p>
+    </article>
+    <article class="card">
+      <h4>Film Pendek &amp; Produksi Siaran</h4>
+      <p>Siswa PSPT aktif memproduksi karya sinematografi dan program televisi, seperti film pendek
+         "Bukan Sekedar Nama" yang digarap mandiri dari penulisan naskah hingga penyuntingan.</p>
+    </article>
+    <article class="card">
+      <h4>Perangkat Lunak &amp; Aplikasi Bisnis</h4>
+      <p>Siswa RPL mengembangkan beragam perangkat lunak solusi bisnis (Software for Business)
+         dan teknologi berbasis web.</p>
+    </article>
+    <article class="card">
+      <h4>Proyek IoT, Robotika &amp; Jaringan</h4>
+      <p>Siswa TKJ merancang sistem Internet of Things (IoT), infrastruktur Cloud Computing,
+         serta terlibat dalam tim robotika yang berprestasi di tingkat provinsi.</p>
+    </article>
+    <article class="card">
+      <h4>Desain Grafis &amp; Media Visual</h4>
+      <p>Siswa DKV menghasilkan ilustrasi digital, branding, serta desain media promosi yang sering
+         memenangkan kategori Graphic Design Technology di LKS tingkat Kota Medan hingga
+         Provinsi Sumatera Utara.</p>
+    </article>
+  </div>
+
+  <h3 class="kur-judul">Eksibisi &amp; Jasa Produksi</h3>
+  <p class="kur-intro">
+    Selain untuk tugas sekolah, hasil karya siswa dipamerkan dalam Gebyar &amp; Expo Pendidikan
+    serta dikomersialkan secara profesional melalui unit produksi sekolah (seperti jasa pembuatan
+    animasi dan layanan perbaikan perangkat keras/jaringan).
+  </p>
+</main>
   
   <!-- ★ BARU: halaman Kontak -->
   <main class="konten-utama halaman" id="hal-kontak" hidden>
@@ -343,19 +386,21 @@ document.querySelector('.hamburger-btn').addEventListener('click', function () {
   document.querySelector('.nav-links').classList.toggle('buka');
 });
 
+
 // ★ Chatbot: pilih pertanyaan ATAU ketik sendiri
-// t = teks tombol, k = kata kunci (untuk pertanyaan yang diketik), j = jawaban
+// t = teks tombol (kalau tidak ada t, item tetap menjawab tapi tanpa tombol)
+// k = kata kunci, j = jawaban
 const daftarTanya = [
   { t: 'Kapan SMKN 9 Medan berdiri?',
-    k: ['berdiri', 'didirikan', 'tahun', 'sejarah', 'pendirian', 'sk pendirian'],
+    k: ['berdiri', 'didirikan', 'tahun berapa', 'tahun berdiri', 'sejarah', 'pendirian', 'sk pendirian'],
     j: 'SMKN 9 Medan resmi didirikan pada 7 Maret 1997 berdasarkan SK Pendirian Nomor 036/0/1997.' },
 
   { t: 'Apa akreditasi sekolah?',
-    k: ['akreditasi', 'akreditasinya', 'iso', 'mutu', 'unggul', 'ban-sm'],
+    k: ['akreditasi', 'iso', 'mutu', 'unggul', 'ban-sm'],
     j: 'SMKN 9 Medan memiliki Akreditasi A (Unggul) dengan Nomor SK 762/BAN-SM/SK/2019, serta menerapkan standar manajemen mutu ISO 9001:2000.' },
 
   { t: 'Apa itu SMKN 9 Medan?',
-    k: ['profil', 'apa itu smkn', 'tentang sekolah', 'npsn', 'fasilitas', 'jumlah siswa', 'siswa', 'guru', 'tenaga pendidik', 'laboratorium', 'ruang kelas', 'perpustakaan', 'lsp', 'bnsp', 'luas'],
+    k: ['profil', 'apa itu smkn', 'tentang sekolah', 'tentang smkn', 'npsn', 'fasilitas', 'jumlah siswa', 'jumlah guru', 'tenaga pendidik', 'laboratorium', 'ruang kelas', 'perpustakaan', 'lsp', 'bnsp', 'luas', 'negeri'],
     j: 'SMKN 9 Medan (NPSN: 10210766) adalah sekolah menengah kejuruan berstatus negeri di bawah naungan Pemerintah Provinsi Sumatera Utara.\n\n' +
        '• Lahan seluas lebih dari 8.800 m²\n' +
        '• Sekitar 98 tenaga pendidik\n' +
@@ -364,24 +409,26 @@ const daftarTanya = [
        '• Memiliki LSP-P1 SMKN 9 Medan yang terlisensi BNSP untuk menguji kompetensi keahlian siswa sebelum lulus' },
 
   { t: 'Di mana alamat sekolah?',
-    k: ['alamat', 'lokasi', 'dimana', 'di mana', 'letak', 'jalan', 'patriot', 'kode pos', 'sunggal'],
+    k: ['alamat', 'lokasi', 'dimana', 'di mana', 'letak', 'jalan', 'patriot', 'kode pos', 'sunggal', 'peta'],
     j: 'Alamat lengkap:\nJl. Patriot No. 20 A, Kelurahan Lalang, Kecamatan Medan Sunggal, Kota Medan, Sumatera Utara, Kode Pos 20127.' },
 
-  { t: 'Jurusan apa saja yang ada?',
-    k: ['jurusan apa', 'daftar jurusan', 'program keahlian', 'tkj', 'dkv', 'animasi', 'pspt', 'pekerja sosial', 'televisi', 'desain', 'jaringan'],
+  { t: 'Jurusan apa saja yang ada?', umum: true,
+    k: ['jurusan', 'program keahlian', 'konsentrasi', 'bidang keahlian', 'daftar jurusan'],
     j: 'Ada 6 Program Keahlian yang berfokus pada teknologi informasi, industri kreatif, dan layanan sosial:\n\n' +
        '1. Rekayasa Perangkat Lunak (RPL)\n' +
        '2. Teknik Komputer dan Jaringan (TKJ)\n' +
        '3. Desain Komunikasi Visual (DKV)\n' +
        '4. Animasi\n' +
        '5. Produksi dan Siaran Program Televisi (PSPT)\n' +
-       '6. Pekerja Sosial' },
+       '6. Pekerja Sosial\n\n' +
+       'Mau tahu lebih jauh? Ketik nama jurusannya, misalnya "RPL" atau "karya jurusan Animasi".' },
 
   { t: 'Apa itu jurusan RPL?',
-    k: ['rpl', 'rekayasa', 'perangkat lunak', 'software', 'coding', 'programmer', 'prospek', 'lulusan', 'materi', 'belajar apa'],
+    k: ['rpl', 'rekayasa', 'perangkat lunak', 'software', 'coding', 'programmer', 'prospek', 'lulusan', 'jurusan rpl', 'apa itu rpl'],
     j: 'Rekayasa Perangkat Lunak (RPL) adalah jurusan yang mempelajari seluruh proses pembuatan dan pengembangan perangkat lunak (software).\n\n' +
        'Materi yang dipelajari: dasar pemrograman (coding), pembuatan situs web, pengembangan aplikasi seluler, perancangan basis data, serta pengelolaan antarmuka pengguna (UI/UX).\n\n' +
-       'Prospek lulusan: junior programmer (tersedia skema sertifikasi Pemrogram Junior di LSP sekolah), web developer, mobile app developer, penguji perangkat lunak (quality assurance), atau melanjutkan kuliah di bidang Ilmu Komputer dan Teknik Informatika.' },
+       'Prospek lulusan: junior programmer (tersedia skema sertifikasi Pemrogram Junior di LSP sekolah), web developer, mobile app developer, penguji perangkat lunak (quality assurance), atau melanjutkan kuliah di bidang Ilmu Komputer dan Teknik Informatika.\n\n' +
+       'Karya siswa RPL: perangkat lunak solusi bisnis (Software for Business) dan teknologi berbasis web.' },
 
   { t: 'Bagaimana cara menghubungi sekolah?',
     k: ['kontak', 'hubungi', 'menghubungi', 'telepon', 'telpon', 'telp', 'fax', 'email', 'surel', 'bkk', 'lowongan', 'alumni', 'website', 'situs', 'instagram', 'facebook', 'sosial media', 'media sosial'],
@@ -398,7 +445,43 @@ const daftarTanya = [
        '• Berbasis industri & praktik: metode Teaching Factory dan kelas industri (misalnya Kelas Axioo untuk TKJ)\n' +
        '• Teknologi terkini: perangkat ajar Koding dan Kecerdasan Artifisial (AI), serta pembelajaran berbasis projek (Projek IPAS)\n' +
        '• Sertifikasi resmi: uji kompetensi melalui LSP SMKN 9 Medan berlisensi BNSP\n' +
-       '• Sistem belajar: 5 hari kerja (Senin–Jumat), sehari penuh' }
+       '• Sistem belajar: 5 hari kerja (Senin–Jumat), sehari penuh' },
+
+  { t: 'Apa saja karya siswa?',
+    k: ['karya', 'hasil karya', 'produk', 'proyek', 'project', 'portofolio', 'pameran', 'eksibisi', 'expo', 'gebyar', 'lks', 'lomba', 'prestasi', 'jasa produksi', 'komersial'],
+    j: 'Siswa aktif menghasilkan produk kreatif, aplikasi digital, film pendek, hingga inovasi robotika sesuai 6 konsentrasi keahlian, dipamerkan lewat Teaching Factory dan Lomba Kompetensi Siswa (LKS).\n\n' +
+       '• Animasi: film animasi pendek, model 3D (Blender), animasi arsitektural\n' +
+       '• PSPT: film pendek dan program televisi\n' +
+       '• RPL: perangkat lunak bisnis dan teknologi web\n' +
+       '• TKJ: IoT, Cloud Computing, robotika\n' +
+       '• DKV: ilustrasi digital, branding, desain media promosi\n\n' +
+       'Karya juga dipamerkan di Gebyar & Expo Pendidikan dan dikomersialkan lewat unit produksi sekolah (jasa animasi serta perbaikan perangkat keras/jaringan).' },
+
+  // ---- Item tanpa tombol (hanya menjawab kalau diketik) ----
+  { k: ['animasi', 'blender', '3d', 'youtube', 'arsitektural'],
+    j: 'Animasi adalah salah satu dari 6 program keahlian SMKN 9 Medan.\n\n' +
+       'Karya siswa: film animasi pendek, desain model 3D (menggunakan Blender), dan jasa pembuatan animasi arsitektural yang dipublikasikan di kanal YouTube resmi Animasi SMKN 9 Medan.' },
+
+  { k: ['pspt', 'siaran', 'televisi', 'film pendek', 'sinematografi', 'bukan sekedar nama'],
+    j: 'Produksi dan Siaran Program Televisi (PSPT) adalah salah satu dari 6 program keahlian SMKN 9 Medan.\n\n' +
+       'Karya siswa: karya sinematografi dan program televisi, misalnya film pendek "Bukan Sekedar Nama" yang digarap mandiri dari penulisan naskah hingga penyuntingan.' },
+
+  { k: ['tkj', 'jaringan', 'komputer', 'iot', 'internet of things', 'cloud', 'robotika', 'robot'],
+    j: 'Teknik Komputer dan Jaringan (TKJ) adalah salah satu dari 6 program keahlian SMKN 9 Medan. Jurusan ini punya kelas industri Axioo.\n\n' +
+       'Karya siswa: sistem Internet of Things (IoT), infrastruktur Cloud Computing, serta tim robotika yang berprestasi di tingkat provinsi.' },
+
+  { k: ['dkv', 'desain komunikasi', 'desain grafis', 'grafis', 'ilustrasi', 'branding', 'media promosi'],
+    j: 'Desain Komunikasi Visual (DKV) adalah salah satu dari 6 program keahlian SMKN 9 Medan.\n\n' +
+       'Karya siswa: ilustrasi digital, branding, dan desain media promosi. Siswa DKV sering memenangkan kategori Graphic Design Technology di LKS tingkat Kota Medan hingga Provinsi Sumatera Utara.' },
+
+  { k: ['pekerja sosial', 'peksos'],
+    j: 'Pekerja Sosial adalah salah satu dari 6 program keahlian SMKN 9 Medan, di bidang layanan sosial. Informasi lebih rinci belum tersedia di chatbot ini; silakan hubungi sekolah.' },
+
+  { k: ['halo', 'hai', 'selamat pagi', 'selamat siang', 'selamat sore', 'selamat malam', 'assalamualaikum'],
+    j: 'Halo! 👋 Silakan tanya seputar SMKN 9 Medan: berdiri, akreditasi, alamat, jurusan, kurikulum, karya siswa, atau kontak.' },
+
+  { k: ['terima kasih', 'makasih', 'thanks', 'thx'],
+    j: 'Sama-sama! 😊 Kalau masih ada yang ingin ditanyakan, silakan.' }
 ];
 
 const chatBox = document.getElementById('chatBox');
@@ -438,20 +521,35 @@ function pilihTanya(p) {
   balas(p.j);
 }
 
-// OPSI 2: ketik pertanyaan -> cari yang paling cocok berdasarkan kata kunci
+// OPSI 2: ketik pertanyaan -> cocokkan kata kunci
+// Skor = jumlah panjang kata kunci yang ditemukan (kata lebih spesifik = skor lebih tinggi).
+// Kalau ada 2 topik yang sama-sama cocok, keduanya dijawab sekaligus.
+// umum: true = jawaban umum yang kalah dari topik yang lebih spesifik.
 function cariJawaban(teks) {
-  const q = teks.toLowerCase();
-  let terbaik = null, skorMax = 0;
+  const q = ' ' + teks.toLowerCase().replace(/\s+/g, ' ').trim() + ' ';
+  const hasil = [];
   daftarTanya.forEach(function (p) {
     let skor = 0;
     p.k.forEach(function (kata) {
       if (q.indexOf(kata) !== -1) skor += kata.length;
     });
-    if (skor > skorMax) { skorMax = skor; terbaik = p; }
+    if (skor > 0) hasil.push({ p: p, skor: skor });
   });
-  return terbaik
-    ? terbaik.j
-    : 'Maaf, saya belum menemukan jawaban untuk pertanyaan itu. Coba pilih salah satu pertanyaan di bawah, atau tanyakan tentang: tahun berdiri, akreditasi, profil, alamat, jurusan, RPL, atau kontak sekolah.';
+
+  if (hasil.length === 0) {
+    return 'Maaf, saya belum menemukan jawaban untuk itu. Coba pilih salah satu pertanyaan di bawah, atau ketik kata seperti: jurusan, RPL, TKJ, kurikulum, karya siswa, alamat, atau kontak.';
+  }
+
+  // item "umum" (daftar jurusan) dikalahkan kalau ada topik yang lebih spesifik
+  const spesifik = hasil.filter(function (h) { return !h.p.umum; });
+  if (spesifik.length > 0) hasil.splice(0, hasil.length, ...spesifik);
+
+  hasil.sort(function (a, b) { return b.skor - a.skor; });
+  const jawaban = [hasil[0].p.j];
+  if (hasil.length > 1 && hasil[1].skor >= hasil[0].skor * 0.6) {
+    jawaban.push(hasil[1].p.j);
+  }
+  return jawaban.join('\n\n──────────\n\n');
 }
 
 chatForm.addEventListener('submit', function (e) {
@@ -463,8 +561,9 @@ chatForm.addEventListener('submit', function (e) {
   balas(cariJawaban(teks));
 });
 
-// buat tombol-tombol pilihan
+// buat tombol pilihan (hanya item yang punya "t")
 daftarTanya.forEach(function (p) {
+  if (!p.t) return;
   const b = document.createElement('button');
   b.textContent = p.t;
   b.addEventListener('click', function () { pilihTanya(p); });
@@ -497,7 +596,7 @@ chatBox.addEventListener('click', function (e) {
 document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape') tutupChat();
 });
-
+    
 // ★ BARU: Navbar fluid v2 (tepi depan bergerak cepat, tepi belakang menyusul)
 const navEl = document.querySelector('.nav-links');
 const pill = document.createElement('span');
