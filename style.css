@@ -463,3 +463,12 @@ body::before { opacity: .35; }   /* gumpalan warna diredupkan */
   transition: background .25s ease;
 }
 .chat-form button:hover { background: rgba(37,99,235,1); }
+
+/* Halaman Kurikulum */
+.kur-intro { margin-top: 12px; line-height: 1.7; color: #e2e8f0; }
+.kur-judul { margin-top: 22px; }
+.kur-grid  { grid-template-columns: repeat(2, 1fr); }   /* 4 kartu = 2 x 2 */
+
+@media screen and (max-width: 600px) {
+  .kur-grid { grid-template-columns: 1fr; }
+}
